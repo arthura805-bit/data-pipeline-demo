@@ -1,35 +1,34 @@
 # data-pipeline-demo
 
-A minimal, runnable **extract → transform → validate → load** pipeline in Python.
+A minimal **extract → transform → validate → load** pipeline in Python.
 
-- **extract** rows from a CSV file
-- **transform** records (type coercion, normalization) with pure functions
-- **validate** records into valid / invalid sets
-- **export** valid records to JSON
-- **report** a simple run summary (`PipelineReport` dataclass)
-
-Standard library at runtime. Synthetic data only. No proprietary code or data.
-
-## Project layout
-
-```
-pipeline.py               # extract_csv / transform / validate / export / run_pipeline
-examples/input.csv        # sample data
-examples/run_pipeline.py  # run the full pipeline + print report
-tests/test_pipeline.py    # pytest / standalone tests
-requirements.txt          # dev-only: pytest
-```
+## What this demonstrates
+- **Extract** rows from a CSV file.
+- **Transform** records (type coercion, normalization) with pure functions.
+- **Validate** records into valid / invalid sets.
+- **Export** valid records to JSON.
+- **Report** a simple run summary (`PipelineReport` dataclass).
 
 ## Run
-
 ```bash
 python examples/run_pipeline.py
-python -m pytest                # or: python tests/test_pipeline.py
 ```
 
-Expected: `extracted=6 transformed=6 valid=3 invalid=3` (rows with bad id, an
-out-of-range score, and a missing name are rejected).
+## Run tests
+```bash
+python -m pytest                # if pytest is installed
+python tests/test_pipeline.py   # standalone, no dependencies
+```
+
+## How it works
+`run_pipeline` chains `extract_csv` → `transform` → `validate` → `export_json`
+and returns a `PipelineReport`. Records with a bad id, an out-of-range score, or
+a missing name are rejected; valid records are written to JSON.
+
+## Scope
+A focused demonstration of a small, honest ETL flow with validation and
+reporting. Standard library at runtime, synthetic data only. Not a product, not a
+benchmark.
 
 ## License
-
 MIT — see [LICENSE](LICENSE).
